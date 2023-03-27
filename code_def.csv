@@ -1,0 +1,141 @@
+prompt,completion
+ 央视频用户行为明细表,"CREATE TABLE target.newst_dw_all_details_day_tar
+(
+    `event` String COMMENT '事件名称',
+    `appkey` String COMMENT '终端Appkey',
+    `app_name` String COMMENT '终端名称',
+    `channel_code` String COMMENT '渠道code',
+    `channel_name` String COMMENT '渠道名称',
+    `terminal_type` String COMMENT '终端类型',
+    `version` String COMMENT '版本号',
+    `ip` String COMMENT '外网ip',
+    `province` String COMMENT '地域（省）',
+    `city` String COMMENT '地域（地级市）',
+    `uuid` String COMMENT 'boss激活唯一标识',
+    `is_start1` String COMMENT '是否跳转',
+    `ispay` String COMMENT '是否付费',
+    `mac` String COMMENT 'Mac地址',
+    `userid` String COMMENT '用户标识',
+    `nodetime` String COMMENT '行为时间',
+    `playtype` String COMMENT '播放类型',
+    `firstlevelpanelid` String COMMENT '一级panelid',
+    `firstLevelPanelName` String COMMENT '一级panel名称',
+    `secondLevelPanelID` String COMMENT '二级panelid',
+    `secondLevelPanelName` String COMMENT '二级panel名称',
+    `specialSubjectID` String COMMENT '专题id',
+    `specialSubjectName` String COMMENT '专题名称',
+    `topicID` String COMMENT '楼层id',
+    `topicName` String COMMENT '楼层名称',
+    `topicPosition` String COMMENT '楼层位置',
+    `masterplateid` String COMMENT '模版id',
+    `recommendposition` String COMMENT '海报页位置',
+    `tabTitle` String COMMENT 'tab标题',
+    `channelid` String COMMENT '直播频道ID',
+    `channel_title` String COMMENT '直播频道名称',
+    `seriesid` String COMMENT '节目集id',
+    `series_title` String COMMENT '节目集名称',
+    `series_contenttype` String COMMENT '节目集内容类型',
+    `firstLevelProgramType` String COMMENT '一级节目类型',
+    `firstLevelProgramSubType` String COMMENT '二级节目类型',
+    `programid` String COMMENT '节目ID',
+    `program_title` String COMMENT '节目名称',
+    `program_contenttype` Nullable(String),
+    `substanceid` String COMMENT '内容id',
+    `substancename` String COMMENT '内容名称',
+    `contentType` String COMMENT '内容类型',
+    `clickType` String COMMENT '点击内容类型',
+    `tvShowID` String COMMENT '电视栏目ID',
+    `tvShowName` String COMMENT '电视栏目名称',
+    `playid` String COMMENT '播放唯一标示',
+    `playSource` Nullable(String) COMMENT '推荐位播放器',
+    `playLengths` Float64 COMMENT '播放时长(秒)',
+    `original_substanceid` String COMMENT '源内容id',
+    `original_substancename` String COMMENT '源内容名称',
+    `original_firstLevelProgramType` String COMMENT '源内容一级分类',
+    `original_substanceType` String COMMENT '源内容类型',
+    `dt` Date COMMENT '数据日期'
+)
+ENGINE = ReplicatedMergeTree('/clickhouse/tables/{shard}/target/newst_dw_all_details_day_tar', '{replica}')
+PARTITION BY toYYYYMMDD(dt)
+ORDER BY (uuid, dt)
+SETTINGS index_granularity = 8192"
+央视频点播表,"CREATE TABLE target.newst_dw_vodnode_tar
+(
+    `appkey` String COMMENT '应用标识',
+    `app_name` String COMMENT '应用名称',
+    `channel_code` String COMMENT '渠道号',
+    `channel_name` String COMMENT '渠道名称',
+    `additional_ip` String COMMENT '外网IP',
+    `ip_num` String COMMENT '解析后的IP地址',
+    `country` String COMMENT '国家',
+    `province` String COMMENT '省份',
+    `city` String COMMENT '城市',
+    `uuid` String COMMENT '用户唯一标识',
+    `mac` String COMMENT '用户MAC地址',
+    `userid` String COMMENT '用户ID',
+    `seriesid` String COMMENT '内容ID',
+    `series_title` String COMMENT '内容标题',
+    `series_contenttype` String COMMENT '内容类型',
+    `series_type` String COMMENT '内容一级分类',
+    `series_subtype` String,
+    `programid` String COMMENT '节目ID',
+    `program_title` String COMMENT '节目标题',
+    `program_contenttype` String COMMENT '节目类型',
+    `program_type` String COMMENT '节目一级分类',
+    `program_subtype` String,
+    `playid` String COMMENT '播放标识',
+    `panelid` String COMMENT 'panelID?',
+    `panelname` String COMMENT 'panel名称',
+    `topicid` String COMMENT '专题ID',
+    `topicname` String COMMENT '专题名称',
+    `locationid` String COMMENT '推荐位ID',
+    `location_name` String COMMENT '推荐位名称',
+    `version` String COMMENT '版本号',
+    `start_nodetime` String COMMENT '开始时间',
+    `end_nodetime` String COMMENT '结束时间',
+    `vod_time` String COMMENT '点播时间',
+    `dt` Date COMMENT '日期'
+)
+ENGINE = ReplicatedMergeTree('/clickhouse/tables/{shard}/target/newst_dw_vodnode', '{replica}')
+PARTITION BY toYYYYMMDD(dt)
+ORDER BY (playid, dt)
+SETTINGS index_granularity = 8192"
+央视频快速点击表,"CREATE TABLE target.newst_dw_livenode_tar
+(
+    `appkey` String COMMENT '应用标识',
+    `app_name` String COMMENT '应用名称',
+    `channel_code` String COMMENT '渠道号',
+    `channel_name` String COMMENT '渠道名称',
+    `additional_ip` String COMMENT '外网ip',
+    `ip_num` String COMMENT '解析后的IP',
+    `country` String COMMENT '国家',
+    `province` String COMMENT '省份',
+    `city` String COMMENT '城市',
+    `uuid` String COMMENT '用户唯一标识',
+    `mac` String COMMENT '用户MAC地址',
+    `userid` String COMMENT '用户ID',
+    `channelid` String COMMENT 'ID',
+    `channel_title` String,
+    `channel_contenttype` String,
+    `type` String,
+    `subtype` String,
+    `playid` String COMMENT '播放标识',
+    `panelid` String COMMENT 'panelID',
+    `panel_name` String COMMENT 'panel名称',
+    `topicid` String COMMENT '专题ID',
+    `topic_name` String COMMENT '专题名称',
+    `locationid` String COMMENT '推荐位ID',
+    `location_name` String COMMENT '推荐位名称',
+    `version` String COMMENT '版本号',
+    `start_nodetime` String COMMENT '开始时间',
+    `end_nodetime` String COMMENT '结束时间',
+    `live_time` String COMMENT '直播时长',
+    `dt` Date COMMENT '日期'
+)
+ENGINE = ReplicatedMergeTree('/clickhouse/tables/{shard}/target/newst_dw_livenode_tar', '{replica}')
+PARTITION BY toYYYYMMDD(dt)
+ORDER BY (playid, dt)
+SETTINGS index_granularity = 8192
+
+
+这是央视频快速点击表，根据这个表给出按照应用标识进行分组，且推荐位ID为某一个值的用户量,且按照日期降序排序"
